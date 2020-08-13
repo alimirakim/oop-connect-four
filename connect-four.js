@@ -21,13 +21,13 @@ window.addEventListener("DOMContentLoaded", ev => {
     handlePlayerName(player1Name, player2Name);
   });
 
-  let clickTarget = document.getElementById("click-targets");
-  clickTarget.addEventListener("click", ev => {
+  let clickTargets = document.getElementById("click-targets");
+  clickTargets.addEventListener("click", ev => {
     if (!ev.target.id.includes("column") || !game) {
       return;
     };
     game.playInColumn();
-    updateUI();
+    updateUI(clickTargets);
     // if (checkColumnFull()) {
       // putToken(currentPlayer, ev);
     // } 
@@ -40,13 +40,13 @@ window.addEventListener("DOMContentLoaded", ev => {
     player1Name.value = "";
     player2Name.value = "";
     newGame.disabled = "true";
-    updateUI();
+    updateUI(clickTargets);
   });
 });
 
 
 
-function updateUI(){ // TESTED
+function updateUI(clickTargets){ // TESTED
   if (game === undefined){
     boardHolder.classList.add("is-invisible");
   } else {
@@ -54,6 +54,16 @@ function updateUI(){ // TESTED
     gameName.innerHTML = game.getName();
     console.log(game.currentPlayer);
   }
+  let playerNow, playerOff;
+  if (game.currentPlayer === 1) {
+    playerNow = "red";
+    playerOff = "black";
+  } else {
+    playerNow = "black";
+    playerOff = "red";
+  }
+  clickTargets.classList.add(playerNow);
+  clickTargets.classList.remove(playerOff);
 }
 
 // Check if player name inputs have names
