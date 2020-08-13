@@ -1,14 +1,28 @@
 let dummyPlayerClick = "div click target";
 let currentPlayer = "red";
+let boardHolder = document.getElementById("board-holder");
+let newGame = document.getElementById("new-game");
+let gameName = document.getElementById("game-name");
 let game = undefined;
-  let newGame = document.getElementById("new-game");
 
+function updateUI(){
+    if (game === undefined){
+        boardHolder.classList.add("is-invisible");
+    } else {
+        boardHolder.classList.remove("is-invisible");
+        gameName.innerHTML = game.getName();
+    }
+
+
+}
 class Game {
   constructor(player1Name, player2Name) {
     this.player1Name = player1Name.value;
     this.player2Name = player2Name.value;
   }
-
+getName(){
+    return `${this.player1Name} vs ${this.player2Name}`;
+}
 
 
 }
@@ -31,6 +45,7 @@ window.addEventListener("DOMContentLoaded", ev => {
     player1Name.value = "";
     player2Name.value = "";
     newGame.disabled = "true";
+    updateUI();
   });
 
 
