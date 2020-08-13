@@ -23,7 +23,7 @@ window.addEventListener("DOMContentLoaded", ev => {
 
   let clickTarget = document.getElementById("click-targets");
   clickTarget.addEventListener("click", ev => {
-    if (!ev.target.id.includes("column")) {
+    if (!ev.target.id.includes("column") || !game) {
       return;
     };
     game.playInColumn();
@@ -52,6 +52,7 @@ function updateUI(){ // TESTED
   } else {
     boardHolder.classList.remove("is-invisible");
     gameName.innerHTML = game.getName();
+    console.log(game.currentPlayer);
   }
 }
 
