@@ -17,7 +17,7 @@ export class Column {
     }
   }
   getTokenAt(rowNum) {
-    // TODO flip numbers to go bottom-up
+    // 
     if (!this.tokens[rowNum]) {
       return null;
     } else if (this.tokens[rowNum]) {
@@ -32,27 +32,23 @@ export class Column {
 }
 
 
-
+//
 export class ColumnWinInspector {
   constructor(column) { // Column instance
     this.column = column;
   }
-  // Looops through rows, keeps count of consecutive-match-tokens, and returns winner if 4-in-a-row.
-  inspect() {
+  // Loop through tokens, keep count of consecutive-matches, returns winner if 4-in-a-row.
+  inspect() { // TESTED
     let count = 1;
-    for (let i = 0; i <= 6; i++) {
-      // console.log('token', this.column.tokens[i]);
-      if (this.column.tokens[i] && (this.column.tokens[i] === this.column.tokens[i -1])) { // not counting beyond 2
+    for (let i = 0; i < 6; i++) {
+      if (this.column.getTokenAt(i) === this.column.getTokenAt(i + 1)) {
         count++;
-        console.log('count', count);
-        if (count === 3) {
-          console.log('inspector winner', this.column.tokens[i]);
-          return this.column.tokens[i]; // Returns the player name
-        } else {
-          count = 1;
+        if (count === 4) {
+          return this.column.getTokenAt(i);
         }
+      } else {
+        count = 1;
       }
     }
-    return null;
   }
 }

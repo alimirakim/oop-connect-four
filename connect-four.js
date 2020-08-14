@@ -5,8 +5,6 @@
 
 import { Game } from "./game.js";
 
-
-
 let game = undefined;
 const formHolder = document.getElementById("form-holder"); // div
 const player1Name = document.getElementById("player-1-name"); // text input
@@ -15,6 +13,34 @@ const newGame = document.getElementById("new-game"); // button
 const gameName = document.getElementById("game-name");
 const boardHolder = document.getElementById("board-holder"); //
 const clickTargets = document.getElementById("click-targets");
+
+
+
+// WITH VALID PLAYER NAMES, ENABLE NEW GAME
+formHolder.addEventListener("keyup", event => {
+  if (player1Name.value && player2Name.value) {
+    newGame.disabled = false;
+  } else {
+    newGame.disabled = true;
+  }
+});
+// ON NEW GAME CLICK:
+newGame.addEventListener("click", event => {
+  game = new Game(player1Name.value, player2Name.value);
+  [player1Name.value, player2Name.value] = ["", ""];
+  newGame.disabled = true;
+  //updateUI();
+});
+
+// ON PLAYER CLICK:
+clickTargets.addEventListener("click", event => {
+  if (event.target.id.includes("column-")) {
+    const colNum = Number.parseInt(event.target.id[7])
+    game.playInColumn(colNum); // implement game logic, state changes
+    game.switchPlayer();
+    updateUI(event.currentTarget); // refresh screen
+  };
+});
 
 function updateBoardPieces() {
   for (let ri = 0; ri <= 5; ri++) { // row index
@@ -56,29 +82,3 @@ function updateUI(clickedTarget) { //
 
   }
 }
-
-
-// When new-game button is clicked, creates new Game with player names, 
-newGame.addEventListener("click", event => {
-  game = new Game(player1Name.value, player2Name.value);
-  [player1Name.value, player2Name.value] = ["", ""];
-  newGame.disabled = true;
-  //updateUI();
-});
-formHolder.addEventListener("keyup", event => {
-  if (player1Name.value && player2Name.value) {
-    newGame.disabled = false;
-  } else {
-    newGame.disabled = true;
-  }
-});
-
-
-clickTargets.addEventListener("click", event => {
-  if (event.target.id.includes("column-")) {
-    const colNum = Number.parseInt(event.target.id[7])
-    game.playInColumn(colNum); // implement game logic, state changes
-    game.switchPlayer();
-    updateUI(event.currentTarget); // refresh screen
-  };
-});

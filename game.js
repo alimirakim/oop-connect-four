@@ -13,10 +13,12 @@ export class Game {
     this.player2Name = player2Name;
     this.gameName = `${this.player1Name} vs. ${this.player2Name}!!!`
     this.columns = [new Column(), new Column(), new Column(), new Column(), new Column(), new Column(), new Column()] // 7 columns
-    this.winner = "";
+    this.winner;
   };
   getName() {
-    if (this.winner !== "") {
+    if (this.winner === "tie") {
+      return `It's a tie...`;
+    } else if (this.winner) {
       return `Player ${this.winner} wins!!!`;
     } else {
       return `${this.player1Name} vs. ${this.player2Name}!!!`;
@@ -29,6 +31,7 @@ export class Game {
       return "black";
     }
   };
+  // Changed hover-color of token-indicator to currentPlayer
   changeColor(clickedTarget) { // TESTED
     if (this.currentPlayer === this.player1Name) {
       clickedTarget.classList.remove("black");
@@ -51,7 +54,7 @@ export class Game {
     this.checkForTie();
     this.checkForColumnWin();
   }
-  getTokenAt(colNum, rowNum) {
+  getTokenAt(colNum, rowNum) { // return a player-name or null
     return this.columns[colNum].getTokenAt(rowNum);
   };
   isColumnFull(colNum) {
@@ -67,7 +70,7 @@ export class Game {
     }
     });
     if (full) {
-      this.winner = "It's a tie!";
+      this.winner = "tie";
       console.log('winner ', this.winner);
     }
   }
