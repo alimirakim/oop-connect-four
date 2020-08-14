@@ -33,7 +33,8 @@ clickTargets.addEventListener("click", ev => {
   if (!ev.target.id.includes("column") || !game) {
     return;
   };
-  game.playInColumn(); // switches players, then [blank]
+  let colNumber = Number.parseInt(ev.target.id[ev.target.id.length-1]);
+  game.playInColumn(colNumber); // switches players, then [blank]
   updateUI(); // refresh visuals
   // check columns, next todo?
 });
