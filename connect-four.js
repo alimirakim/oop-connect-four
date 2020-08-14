@@ -49,7 +49,16 @@ function updateUI() { // TESTED
     boardHolder.classList.remove("is-invisible");
     gameName.innerHTML = game.getName();
     changeTokenColor();
+    for(let ri = 0; ri <= 5; ri++){
+      for(let ci = 0; ci <= 6; ci++){
+        let square = document.getElementById(`square-${ri}-${ci}`);
+        let token = game.getTokenAt(ri, ci);
+        square.innerHTML = '';
+        putToken(token, square)
+      }
+    }
   }
+
   
 }
 
@@ -77,10 +86,16 @@ function handlePlayerName(player1Name, player2Name) { // TESTED
 }
 
 // Add 'token red/black' classes to clicked div spot
-function putToken(player, ev) { // TESTED
-  let square = document.getElementById(ev.target.id);
+function putToken(token, square) { // TESTED
+  let tokenColor;
+  // let square = document.getElementById(ev.target.id);
   let div = document.createElement("div");
-  div.classList.add(`token`, `${player}`);
+  if (token === 1){
+    tokenColor = "red";
+  } else if (token === 2){
+    tokenColor = "black"
+  }
+  div.classList.add(`token`, `${tokenColor}`);
   square.appendChild(div);
 }
 

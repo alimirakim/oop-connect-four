@@ -1,9 +1,22 @@
 export class Column {
     constructor(){
-        this.columnTokens = [];
+        this.columnTokens = ['', '', '', '', '', ''];
     }
     add(currentPlayer){
-        this.columnTokens.push(currentPlayer);
+        // for(let i = 0; i < this.columnTokens.length; i++){
+        //     if (this.columnTokens[i+1] || (i === this.columnTokens.length && this.columnTokens[i])){
+        //         this.columnTokens[i] = currentPlayer;
+        //     }
+        //     // this.columnTokens.push(currentPlayer);
+        // }
+        let counter = 0;
+        for(let i = this.columnTokens.length - 1; i >= 0; i--){
+            if (!this.columnTokens[i] && counter === 0){
+                this.columnTokens[i] = currentPlayer;
+                counter++
+            }
+        }
+        console.log(this.columnTokens)
     }
 
 
