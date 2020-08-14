@@ -36,7 +36,7 @@ function updateBoardPieces() {
   }
 }
 
-function updateUI(clickedTarget) {
+function updateUI(clickedTarget) { // 
   if (!game) {
     boardHolder.classList.add("is-invisible");
   } else {
@@ -50,7 +50,7 @@ function updateUI(clickedTarget) {
         //column.classList.remove("full"); // Q. Why need this?
       }
     }
-    game.switchPlayer();
+
     game.changeColor(clickedTarget);
     updateBoardPieces(); // I'm actually stupid, refactor this monster and below hunks of junks later.
 
@@ -75,10 +75,10 @@ formHolder.addEventListener("keyup", event => {
 
 
 clickTargets.addEventListener("click", event => {
-  console.log("target num");
   if (event.target.id.includes("column-")) {
     const colNum = Number.parseInt(event.target.id[7])
-    game.playInColumn(colNum);
-    updateUI(event.currentTarget);
+    game.playInColumn(colNum); // implement game logic, state changes
+    game.switchPlayer();
+    updateUI(event.currentTarget); // refresh screen
   };
 });

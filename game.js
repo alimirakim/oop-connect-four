@@ -4,36 +4,7 @@
 //    where should the token fall // col, not row yet;
 // use current player state to update ui;
 
-class Column {
-  constructor() {
-    this.tokens = ["", "", "", "", "", ""];
-  }
-  add(player) {
-    for (let tokenSpot in this.tokens) {
-      tokenSpot = Number(tokenSpot);
-      if (this.tokens[0]) {
-        return;
-      }
-      if (this.tokens[tokenSpot + 1] || (tokenSpot == 5 && !this.tokens[5])) {
-        this.tokens[tokenSpot] = player;
-        return;
-      }
-    }
-  }
-  getTokenAt(rowNum) {
-    // TODO flip numbers to go bottom-up
-    if (!this.tokens[rowNum]) {
-      return null;
-    } else if (this.tokens[rowNum]) {
-      return this.tokens[rowNum];
-    }
-  }
-  isFull() { // Q. Another sugar function let getname, or Demeter?
-    if (this.tokens[0]) {
-      return true;
-    }
-  }
-}
+import { Column, ColumnWinInspector } from "./column.js";
 
 export class Game {
   constructor(player1Name, player2Name) {
@@ -46,7 +17,7 @@ export class Game {
   };
   getName() {
     if (this.winner !== "") {
-      return this.winner;
+      return `Player ${this.winner} wins!!!`;
     } else {
       return `${this.player1Name} vs. ${this.player2Name}!!!`;
     }
@@ -68,7 +39,6 @@ export class Game {
     }
   };
   switchPlayer() { // TESTED
-    console.log("switching to ", this.player1Name);
     if (this.currentPlayer === this.player1Name) {
       this.currentPlayer = this.player2Name;
     } else {
@@ -79,6 +49,7 @@ export class Game {
     this.columns[colNum].add(this.currentPlayer);
     // this.switchPlayer(); // Think it's easier to read to call directly
     this.checkForTie();
+    this.checkForColumnWin();
   }
   getTokenAt(colNum, rowNum) {
     return this.columns[colNum].getTokenAt(rowNum);
@@ -87,18 +58,41 @@ export class Game {
     return this.columns[colNum].isFull();
   }
 
-  checkForTie() { // check reduce and such later, but do something normal for now.
-    const allFull = this.columns.reduce((allFull, column) => {
-      if (!column.isFull()) {
-        allFull = false;
-        return allFull;
-      }
-    }, true);
-    if (allFull) {
-      this.winner = "it is a tie"
+//  METHOD GROUP: Checking for end results.
+  checkForTie() { // TESTED
+    let full = true;
+    this.columns.forEach( column => {
+        if (!column.isFull()) {
+        full = false;
+    }
+    });
+    if (full) {
+      this.winner = "It's a tie!";
+      console.log('winner ', this.winner);
     }
   }
+  checkForColumnWin() { // 'first step, this -the- method if there is winner' < where, which, they mean??? here, playInColumn?
+    this.columns.forEach(column => {
+      let colChecker = new ColumnWinInspector(column);
+      let winner = colChecker.inspect();
+      // console.log('column winner', winner);
+      if (winner) {
+        this.winner = winner;
+        console.log("checked and found winnner ", this.winner);
+      }
+    });
+    
+  }
 
-  //
+// check reduce and such later, but do something normal for now.
+    // const allFull = this.columns.reduce((allFull, column) => {
+    //   if (!column.isFull()) {
+    //     allFull = false;
+    //     return allFull;
+    //   }
+    // }, true);
+    // if (allFull) {
+    //   this.winner = "it is a tie"
+    // }
 
 };
