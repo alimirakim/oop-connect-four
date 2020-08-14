@@ -50,17 +50,35 @@ function updateUI() { // TESTED
     gameName.innerHTML = game.getName();
     changeTokenColor();
     for(let ri = 0; ri <= 5; ri++){
-      for(let ci = 0; ci <= 6; ci++){
+      for(let ci = 0; ci <= 6; ci++) {
+        let column = document.getElementById("column-"+ci);
+        if (game.isColumnFull(ci)) {
+          column.classList.add("full");
+        } else {
+          column.classList.remove("full");
+        }
         let square = document.getElementById(`square-${ri}-${ci}`);
         let token = game.getTokenAt(ri, ci);
         square.innerHTML = '';
         putToken(token, square)
+        checkForTie(game);
+        console.log('winner', game.winnerNumber);
       }
     }
   }
-
-  
 }
+
+// Check each column for if it's full
+function checkForTie(game) {
+  let isFull = true;
+  for (let i = 0; i <= 6; i++) {
+    if (!game.isColumnFull(i)) {
+      return isFull = false;
+    }
+  }
+  game.winnerNumber = 3;
+  return isFull;
+};
 
 // Task - change color of placing-token-indicator (not board tokens)
 function changeTokenColor(){

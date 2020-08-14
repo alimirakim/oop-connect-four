@@ -7,7 +7,8 @@ export class Game {
     this.player1Name = player1Name.value;
     this.player2Name = player2Name.value;
     this.currentPlayer = 1;
-    this.columns = [new Column(), new Column(), new Column(), new Column(), new Column(), new Column(), new Column()]
+    this.columns = [new Column(), new Column(), new Column(), new Column(), new Column(), new Column(), new Column()];
+    this.winnerNumber = 0;
   }
   getName(){ // returns title string
     return `${this.player1Name} vs ${this.player2Name}`;
@@ -24,4 +25,9 @@ export class Game {
   getTokenAt(row, column) {
     return this.columns[column].getTokenAt(row);
   }
+  isColumnFull(colNum) {
+    return this.columns[colNum].isFull();
+  }
+
+
 }
