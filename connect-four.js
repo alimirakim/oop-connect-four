@@ -35,6 +35,7 @@ clickTargets.addEventListener("click", ev => {
   };
   let colNumber = Number.parseInt(ev.target.id[ev.target.id.length-1]);
   game.playInColumn(colNumber); // switches players, then [blank]
+  checkForTie(game);
   updateUI(); // refresh visuals
   // check columns, next todo?
 });
@@ -61,8 +62,6 @@ function updateUI() { // TESTED
         let token = game.getTokenAt(ri, ci);
         square.innerHTML = '';
         putToken(token, square)
-        checkForTie(game);
-        console.log('winner', game.winnerNumber);
       }
     }
   }

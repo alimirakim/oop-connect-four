@@ -1,5 +1,5 @@
 import { Column } from "./column.js";
-import {ColumnWinInspector } from "./columnWinInspector.js";
+import { ColumnWinInspector } from "./columnWinInspector.js";
 
 
 
@@ -11,12 +11,21 @@ export class Game {
     this.columns = [new Column(), new Column(), new Column(), new Column(), new Column(), new Column(), new Column()];
     this.winnerNumber = 0;
   }
-  getName(){ // returns title string
-    return `${this.player1Name} vs ${this.player2Name}`;
+  getName() { // returns title string
+    console.log(this.winnerNumber, "winnerNumber when getName");
+    if (this.winnerNumber === 1) { // player 1 won game,
+      return this.player1Name + " wins!";
+    } else if (this.winnerNumber === 2) { // player 2 won game
+      return this.player2Name + " wins!";
+    } else if (this.winnerNumber === 3) { // a tie
+      return "It's a tie";
+    } else { // game continues
+      return `${this.player1Name} vs ${this.player2Name}`;
+    }
   }
   playInColumn(colNum) {
     this.columns[colNum].add(this.currentPlayer);
-// Switches player
+    // Switches player
     if (this.currentPlayer === 1) {
       this.currentPlayer = 2;
     } else {
@@ -32,10 +41,15 @@ export class Game {
   }
 
   checkForColumnWin() { // use the colInspector class here once per column
-  this.columns.forEach( column => {
-    let columnToInspect = new ColumnWinInspector(column);
-    columnToInspect.inspect();
-  });
+    let winner;
+    for (let i = 0; i < this.columns.length; i++) {
+      let columnToInspect = new ColumnWinInspector(this.columns[i]);
+      winner = columnToInspect.inspect();
+      if (winner !== 0) {
+        break;
+      }
+    }
+    this.winnerNumber = winner;
   }
 
 }
