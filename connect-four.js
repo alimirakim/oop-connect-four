@@ -23,10 +23,8 @@ function updateBoardPieces() {
       square.innerHTML = "";
       const tokenBeingChecked = game.getTokenAt(ci, ri);
       const placedToken = document.createElement("div");
-      console.log(`square-${ri}-${ci}`);
       placedToken.setAttribute("id", `token-${ri}-${ci}`);
       if (tokenBeingChecked === game.player1Name) {
-        console.log("the token matches the name");
         placedToken.setAttribute("class", "token-square red");
       } else if (tokenBeingChecked === game.player2Name) {
         placedToken.setAttribute("class", "token-square black");

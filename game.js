@@ -6,10 +6,16 @@
 
 class Column {
   constructor() {
-    this.tokens = []; // 6th row, 5th row, etc.
+    this.tokens = ["", "", "", "", "", ""];
   }
   add(player) {
-    this.tokens.push(player);
+    for (let tokenSpot in this.tokens) {
+      tokenSpot = Number(tokenSpot);
+      if (this.tokens[tokenSpot+1] || (tokenSpot == 5 && !this.tokens[5])) {
+        this.tokens[tokenSpot] = player;
+        return
+      }
+    }
   }
   getTokenAt(rowNum) {
     // TODO flip numbers to go bottom-up
@@ -68,5 +74,5 @@ export class Game {
   //   bottomSquare.classList.add(game.getColor());
   // };
 
-  
+
 };
