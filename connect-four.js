@@ -5,6 +5,7 @@ let boardHolder = document.getElementById("board-holder");
 let newGame = document.getElementById("new-game");
 let gameName = document.getElementById("game-name");
 let game = undefined;
+let clickTargets = document.getElementById("click-targets");
 
 window.addEventListener("DOMContentLoaded", ev => {
   let player1Name = document.getElementById("player-1-name");
@@ -15,7 +16,6 @@ window.addEventListener("DOMContentLoaded", ev => {
   player2Name.addEventListener("keyup", ev => { // TESTED
     handlePlayerName(player1Name, player2Name);
   });
-  let clickTargets = document.getElementById("click-targets");
 
   // START NEW GAME
   newGame.addEventListener("click", ev => { //
@@ -23,7 +23,7 @@ window.addEventListener("DOMContentLoaded", ev => {
     player1Name.value = "";
     player2Name.value = "";
     newGame.disabled = "true";
-    updateUI(clickTargets);
+    updateUI();
   });
 });
 
@@ -34,21 +34,27 @@ clickTargets.addEventListener("click", ev => {
     return;
   };
   game.playInColumn(); // switches players, then [blank]
-  updateUI(clickTargets); // refresh visuals
+  updateUI(); // refresh visuals
   // check columns, next todo?
 });
 
 
 // checks if gameboard should be drawn.
 // changes color indicator of player-token
-function updateUI(clickTargets) { // TESTED
+function updateUI() { // TESTED
   if (game === undefined) {
     boardHolder.classList.add("is-invisible");
   } else {
     boardHolder.classList.remove("is-invisible");
     gameName.innerHTML = game.getName();
+    changeTokenColor();
   }
-  let playerNow, playerOff; // May work best in a function, 52-61. Task - change color of placing-token-indicator (not board tokens)
+  
+}
+
+// Task - change color of placing-token-indicator (not board tokens)
+function changeTokenColor(){
+  let playerNow, playerOff; 
   if (game.currentPlayer === 1) {
     playerNow = "red";
     playerOff = "black";
