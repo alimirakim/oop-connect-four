@@ -11,9 +11,12 @@ class Column {
   add(player) {
     for (let tokenSpot in this.tokens) {
       tokenSpot = Number(tokenSpot);
-      if (this.tokens[tokenSpot+1] || (tokenSpot == 5 && !this.tokens[5])) {
+      if (this.tokens[0]) {
+        return;
+      }
+      if (this.tokens[tokenSpot + 1] || (tokenSpot == 5 && !this.tokens[5])) {
         this.tokens[tokenSpot] = player;
-        return
+        return;
       }
     }
   }
@@ -25,6 +28,11 @@ class Column {
       return this.tokens[rowNum];
     }
   }
+  isFull() { // Q. Another sugar function let getname, or Demeter?
+    if (this.tokens[0]) {
+      return true;
+    }
+  }
 }
 
 export class Game {
@@ -34,7 +42,15 @@ export class Game {
     this.player2Name = player2Name;
     this.gameName = `${this.player1Name} vs. ${this.player2Name}!!!`
     this.columns = [new Column(), new Column(), new Column(), new Column(), new Column(), new Column(), new Column()] // 7 columns
+    this.winner = "";
   };
+  getName() {
+    if (this.winner !== "") {
+      return this.winner;
+    } else {
+      return `${this.player1Name} vs. ${this.player2Name}!!!`;
+    }
+  }
   getColor() {
     if (this.currentPlayer === this.player1Name) {
       return "red";
@@ -52,6 +68,7 @@ export class Game {
     }
   };
   switchPlayer() { // TESTED
+    console.log("switching to ", this.player1Name);
     if (this.currentPlayer === this.player1Name) {
       this.currentPlayer = this.player2Name;
     } else {
@@ -61,18 +78,27 @@ export class Game {
   playInColumn(colNum) {
     this.columns[colNum].add(this.currentPlayer);
     // this.switchPlayer(); // Think it's easier to read to call directly
+    this.checkForTie();
   }
   getTokenAt(colNum, rowNum) {
     return this.columns[colNum].getTokenAt(rowNum);
   };
+  isColumnFull(colNum) {
+    return this.columns[colNum].isFull();
+  }
 
+  checkForTie() { // check reduce and such later, but do something normal for now.
+    const allFull = this.columns.reduce((allFull, column) => {
+      if (!column.isFull()) {
+        allFull = false;
+        return allFull;
+      }
+    }, true);
+    if (allFull) {
+      this.winner = "it is a tie"
+    }
+  }
 
-  // checkColumn() { // my version, compare later
-  //   let colNum = event.target.id[7];
-  //   let rowNum = 5;// loop squares, check class for red/black/filled
-  //   let bottomSquare = document.getElementById("square-" + rowNum + "-" + colNum);
-  //   bottomSquare.classList.add(game.getColor());
-  // };
-
+  //
 
 };

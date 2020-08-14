@@ -41,12 +41,21 @@ function updateUI(clickedTarget) {
     boardHolder.classList.add("is-invisible");
   } else {
     boardHolder.classList.remove("is-invisible");
-    gameName.innerHTML = game.gameName //game.getName();
+    gameName.innerHTML = game.getName();
+    for (let colNum in game.columns) {
+      const column = document.getElementById(`column-${colNum}`);
+      if (game.isColumnFull(Number(colNum))) {
+        column.classList.add("full");
+      } else {
+        //column.classList.remove("full"); // Q. Why need this?
+      }
+    }
+    game.switchPlayer();
     game.changeColor(clickedTarget);
-    updateBoardPieces();
+    updateBoardPieces(); // I'm actually stupid, refactor this monster and below hunks of junks later.
+
   }
 }
-
 
 
 // When new-game button is clicked, creates new Game with player names, 
@@ -66,12 +75,10 @@ formHolder.addEventListener("keyup", event => {
 
 
 clickTargets.addEventListener("click", event => {
-  console.log("target num" );
+  console.log("target num");
   if (event.target.id.includes("column-")) {
     const colNum = Number.parseInt(event.target.id[7])
     game.playInColumn(colNum);
-    console.log("the first column", game.columns[0]);
     updateUI(event.currentTarget);
-    game.switchPlayer();
   };
 });
