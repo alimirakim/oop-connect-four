@@ -22,6 +22,7 @@ export class Game {
     } else {
       this.currentPlayer = 1;
     }
+    this.checkForColumnWin();
   }
   getTokenAt(row, column) {
     return this.columns[column].getTokenAt(row);
