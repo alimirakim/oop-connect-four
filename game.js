@@ -1,4 +1,5 @@
 import { Column } from "./column.js";
+import {ColumnWinInspector } from "./columnWinInspector.js";
 
 
 
@@ -29,5 +30,11 @@ export class Game {
     return this.columns[colNum].isFull();
   }
 
+  checkForColumnWin() { // use the colInspector class here once per column
+  this.columns.forEach( column => {
+    let columnToInspect = new ColumnWinInspector(column);
+    columnToInspect.inspect();
+  });
+  }
 
 }
