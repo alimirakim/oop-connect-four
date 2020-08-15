@@ -1,35 +1,5 @@
 
 
-export class Column {
-  constructor() {
-    this.tokens = ["", "", "", "", "", ""];
-  }
-  add(player) {
-    for (let tokenSpot in this.tokens) { // loop token spaces
-      tokenSpot = Number(tokenSpot); // return if full
-      if (this.tokens[0]) {
-        return;
-      }
-      if (this.tokens[tokenSpot + 1] || (tokenSpot == 5 && !this.tokens[5])) { // Check if the next space down is occupied. If so, fill the current space. Also check if it's the very last space.
-        this.tokens[tokenSpot] = player;
-        return;
-      }
-    }
-  }
-  getTokenAt(rowNum) {
-    // 
-    if (!this.tokens[rowNum]) {
-      return null;
-    } else if (this.tokens[rowNum]) {
-      return this.tokens[rowNum];
-    }
-  }
-  isFull() { // Q. Another sugar function let getname, or Demeter?
-    if (this.tokens[0]) {
-      return true;
-    }
-  }
-}
 
 
 // win inspection class - matching rows of things.
@@ -47,7 +17,23 @@ export class Column {
 // UI class - visuals, screen. Does NOT change state in any way. Is FED a state and performs rendering-related behavior as the result for each interaction.
 
 
+// 
+export class MatchInspector {
+  constructor(board) {
+    this.board = board;
+  }
+  checkAllMatching(list) {
+  return list.every(function(item, i) {
+    return (item === list[i+1]) || (item === list[list.length-1]);
+  });
+  };
+  checkRow(row, targetMatchLength) { // Check if a match of x length is found
+    for (let i = 0; i < row.length; i++) {
+      let checkingSection = row.slice(i, i+targetMatchLength);
+      return this.checkAllMatching(checkingSection), checkingSection[i]
+  }
 
+}
 
 export class ColumnWinInspector {
   constructor(column) { // Column instance
