@@ -5,43 +5,54 @@
 
 import { Game } from "./game.js";
 
-let game = undefined;
-const formHolder = document.getElementById("form-holder"); // div
-const player1Name = document.getElementById("player-1-name"); // text input
-const player2Name = document.getElementById("player-2-name"); // text input
+let game;
+  const player1Name = document.getElementById("player-1-name"); // text input
+  const player2Name = document.getElementById("player-2-name"); // text input
 const newGame = document.getElementById("new-game"); // button
 const gameName = document.getElementById("game-name");
 const boardHolder = document.getElementById("board-holder"); //
 const clickTargets = document.getElementById("click-targets");
 
-
+checkValidPlayers();
+startNewGame();
 
 // WITH VALID PLAYER NAMES, ENABLE NEW GAME
-formHolder.addEventListener("keyup", event => {
-  if (player1Name.value && player2Name.value) {
-    newGame.disabled = false;
-  } else {
-    newGame.disabled = true;
-  }
-});
+function checkValidPlayers() {
+  const formHolder = document.getElementById("form-holder"); // div
+
+  formHolder.addEventListener("keyup", event => {
+    if ((player1Name.value && player2Name.value) &&
+      (player1Name.value !== player2Name.value)) {
+      newGame.disabled = false;
+    } else {
+      newGame.disabled = true;
+    }
+  });
+}
+
 // ON NEW GAME CLICK:
+function startNewGame() {
 newGame.addEventListener("click", event => {
   game = new Game(player1Name.value, player2Name.value);
   [player1Name.value, player2Name.value] = ["", ""];
   newGame.disabled = true;
-  //updateUI();
+  updateUI();
 });
+}
 
 // ON PLAYER CLICK:
 clickTargets.addEventListener("click", event => {
   if (event.target.id.includes("column-")) {
     const colNum = Number.parseInt(event.target.id[7])
+
     game.playInColumn(colNum); // implement game logic, state changes
+
     game.switchPlayer();
-    updateUI(event.currentTarget); // refresh screen
+    updateUI(); // refresh screen
   };
 });
 
+// Check and update the color-state of red/black tokens for each token-slot.
 function updateBoardPieces() {
   for (let ri = 0; ri <= 5; ri++) { // row index
     for (let ci = 0; ci <= 6; ci++) { // column index
@@ -62,7 +73,7 @@ function updateBoardPieces() {
   }
 }
 
-function updateUI(clickedTarget) { // 
+function updateUI() { // 
   if (!game) {
     boardHolder.classList.add("is-invisible");
   } else {
@@ -70,14 +81,14 @@ function updateUI(clickedTarget) { //
     gameName.innerHTML = game.getName();
     for (let colNum in game.columns) {
       const column = document.getElementById(`column-${colNum}`);
-      if (game.isColumnFull(Number(colNum))) {
+      if (game.isColumnFull(Number(colNum))) { // decipher purpose of this block
         column.classList.add("full");
       } else {
-        //column.classList.remove("full"); // Q. Why need this?
+        column.classList.remove("full"); // Q. Why need this?
       }
     }
 
-    game.changeColor(clickedTarget);
+    game.changeColor();
     updateBoardPieces(); // I'm actually stupid, refactor this monster and below hunks of junks later.
 
   }

@@ -4,7 +4,7 @@
 //    where should the token fall // col, not row yet;
 // use current player state to update ui;
 
-import { Column, ColumnWinInspector } from "./column.js";
+import { Column, ColumnWinInspector, RowWinInspector } from "./column.js";
 
 export class Game {
   constructor(player1Name, player2Name) {
@@ -53,21 +53,31 @@ export class Game {
     // this.switchPlayer(); // Think it's easier to read to call directly
     this.checkForTie();
     this.checkForColumnWin();
+    if (!this.winner) {
+      this.checkForRowWin();
+    }
+    if (!this.winner) {
+      this.checkForRowWin();
+    }
   }
   getTokenAt(colNum, rowNum) { // return a player-name or null
     return this.columns[colNum].getTokenAt(rowNum);
   };
   isColumnFull(colNum) {
-    return this.columns[colNum].isFull();
+    if (this.winner) { // check for a winner first
+      return true;
+    } else {
+      return this.columns[colNum].isFull();
+    }
   }
 
-//  METHOD GROUP: Checking for end results.
+  //  METHOD GROUP: Checking for end results.
   checkForTie() { // TESTED
     let full = true;
-    this.columns.forEach( column => {
-        if (!column.isFull()) {
+    this.columns.forEach(column => {
+      if (!column.isFull()) {
         full = false;
-    }
+      }
     });
     if (full) {
       this.winner = "tie";
@@ -84,18 +94,23 @@ export class Game {
         console.log("checked and found winnner ", this.winner);
       }
     });
-    
-  }
 
-// check reduce and such later, but do something normal for now.
-    // const allFull = this.columns.reduce((allFull, column) => {
-    //   if (!column.isFull()) {
-    //     allFull = false;
-    //     return allFull;
-    //   }
-    // }, true);
-    // if (allFull) {
-    //   this.winner = "it is a tie"
-    // }
+  }
+  checkForRowWin() {
+    for (let i = 0; i < 4; i++) {
+      const fourColumns = this.columns.slice(i, i + 4);
+      let rowMatch = new RowWinInspector(fourColumns);
+      if (rowMatch.inspect()) { // if inspection returns valid winner...
+        this.winner = winner;
+      }
+      // let diagMatch = new DiagWinInspector(fourColumns);
+      // if (diagMatch.inspect()) { // is inspection returns valid winner...
+      //   this.winner = winner;
+      // }
+    }
+  }
+checkForDiagWin() {
+  
+}
 
 };

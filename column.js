@@ -5,12 +5,12 @@ export class Column {
     this.tokens = ["", "", "", "", "", ""];
   }
   add(player) {
-    for (let tokenSpot in this.tokens) {
-      tokenSpot = Number(tokenSpot);
+    for (let tokenSpot in this.tokens) { // loop token spaces
+      tokenSpot = Number(tokenSpot); // return if full
       if (this.tokens[0]) {
         return;
       }
-      if (this.tokens[tokenSpot + 1] || (tokenSpot == 5 && !this.tokens[5])) {
+      if (this.tokens[tokenSpot + 1] || (tokenSpot == 5 && !this.tokens[5])) { // Check if the next space down is occupied. If so, fill the current space. Also check if it's the very last space.
         this.tokens[tokenSpot] = player;
         return;
       }
@@ -32,7 +32,23 @@ export class Column {
 }
 
 
-//
+// win inspection class - matching rows of things.
+// horizontal, vertical, diagonal
+// flexible - choose the row length
+
+// handle input
+// update state
+// render view
+
+// Tracks all kinds of user verbs. new game, names, click turn, disabling unviable clicks.
+
+// Changes actual state of game logic or game.
+
+// UI class - visuals, screen. Does NOT change state in any way. Is FED a state and performs rendering-related behavior as the result for each interaction.
+
+
+
+
 export class ColumnWinInspector {
   constructor(column) { // Column instance
     this.column = column;
@@ -52,3 +68,21 @@ export class ColumnWinInspector {
     }
   }
 }
+
+export class RowWinInspector {
+  constructor(fourColumns) {
+    this.fourColumns = fourColumns;
+  }
+  inspect() { // TODO this works, but it's disgusting
+    for (let i = 0; i < 6; i++) {
+      if (this.fourColumns[0].getTokenAt(i) && (this.fourColumns[0].getTokenAt(i) === this.fourColumns[1].getTokenAt(i) && this.fourColumns[1].getTokenAt(i) === this.fourColumns[2].getTokenAt(i) && this.fourColumns[2].getTokenAt(i) === this.fourColumns[3].getTokenAt(i))) {
+        return this.fourColumns[0].getTokenAt(i);
+      }
+    }
+  }
+}
+
+// export class DiagWinInspector {
+//   constructor(four
+
+// }
