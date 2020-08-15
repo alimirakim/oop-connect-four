@@ -28,12 +28,30 @@ export class MatchInspector {
   });
   };
   checkRow(row, targetMatchLength) { // Check if a match of x length is found
-    for (let i = 0; i < row.length; i++) {
+    for (let i = 0; i < row.length; i++) { // try .find
       let checkingSection = row.slice(i, i+targetMatchLength);
-      return this.checkAllMatching(checkingSection), checkingSection[i]
+      return this.checkAllMatching(checkingSection), checkingSection[i];
   }
+  checkOther()
 
+// ["", "", ""]
+// ["", "", "", "red", ""]
+// ["", "", ""]
+
+
+
+
+columnIndex = 1;
+for row in rows
+checkingSection.push(row[columnIndex]);
+
+let column = [];
+for (let i = 0; i < rows.length; i++) {
+  column.push(rows[i]);
 }
+
+
+
 
 export class ColumnWinInspector {
   constructor(column) { // Column instance

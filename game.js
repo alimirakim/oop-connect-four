@@ -37,7 +37,7 @@ export class Game {
   getTokenAt(colNum, rowNum) { // return player-color or null
     return this.columns[colNum][rowNum]; // TODO Check that this works like python to call array within array
   };
-  // getName() {
+  // getName() { // put this shit in UI, then delete here
   //   if (this.winner === "tie") {
   //     return `It's a tie...`;
   //   } else if (this.winner) {
@@ -63,6 +63,7 @@ export class Game {
   //     clickTargets.classList.add("black");
   //   }
   // };
+
   switchPlayer() {
     if (this.player === this.playerRed) {
       this.player = this.playerBlack;
@@ -83,8 +84,6 @@ export class Game {
       this.checkWinDiags();
     }
   }
-
-
 
   //  METHOD GROUP: Checking for end results.
   checkForTie() { // Update this.winner to 'tie' if every column has top-most squares full.

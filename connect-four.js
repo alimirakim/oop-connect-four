@@ -6,17 +6,20 @@
 import { Game } from "./game.js";
 
 let game;
-  const player1Name = document.getElementById("player-1-name"); // text input
-  const player2Name = document.getElementById("player-2-name"); // text input
+const player1Name = document.getElementById("player-1-name"); // text input
+const player2Name = document.getElementById("player-2-name"); // text input
 const newGame = document.getElementById("new-game"); // button
 const gameName = document.getElementById("game-name");
 const boardHolder = document.getElementById("board-holder"); //
 const clickTargets = document.getElementById("click-targets");
 
-checkValidPlayers();
-startNewGame();
+// Event Listeners, sequential activation
+checkValidPlayers(); // playerName inputs keyups
+startNewGame(); // newGame button click
+playerMove() // Click on valid move-target
 
-// WITH VALID PLAYER NAMES, ENABLE NEW GAME
+
+
 function checkValidPlayers() {
   const formHolder = document.getElementById("form-holder"); // div
 
@@ -29,28 +32,26 @@ function checkValidPlayers() {
     }
   });
 }
-
-// ON NEW GAME CLICK:
 function startNewGame() {
-newGame.addEventListener("click", event => {
-  game = new Game(player1Name.value, player2Name.value);
-  [player1Name.value, player2Name.value] = ["", ""];
-  newGame.disabled = true;
-  updateUI();
-});
+  newGame.addEventListener("click", event => {
+    game = new Game(player1Name.value, player2Name.value);
+    [player1Name.value, player2Name.value] = ["", ""];
+    newGame.disabled = true;
+    updateUI();
+  });
 }
 
-// ON PLAYER CLICK:
-clickTargets.addEventListener("click", event => {
-  if (event.target.id.includes("column-")) {
-    const colNum = Number.parseInt(event.target.id[7])
-
-    game.playInColumn(colNum); // implement game logic, state changes
-
-    game.switchPlayer();
-    updateUI(); // refresh screen
-  };
-});
+function playerMove() {
+  clickTargets.addEventListener("click", event => {
+    if (event.target.id.includes("column-")) {
+      const colNum = Number.parseInt(event.target.id[7])
+      game.playInColumn(colNum); // implement game logic, state changes
+      game.checkForWin(); //
+      game.switchPlayer();
+      updateUI(); // refresh screen
+    };
+  });
+}
 
 // Check and update the color-state of red/black tokens for each token-slot.
 function updateBoardPieces() {
@@ -71,6 +72,35 @@ function updateBoardPieces() {
       square.appendChild(placedToken);
     }
   }
+}
+
+class connectFourUI {
+  getName() {
+  if (this.winner === "tie") {
+    return `It's a tie...`;
+  } else if (this.winner) {
+    return `Player ${this.winner} wins!!!`;
+  } else {
+    return `${this.player1Name} vs. ${this.player2Name}!!!`;
+  }
+}
+getColor() {
+  if (this.currentPlayer === this.player1Name) {
+    return "red";
+  } else {
+    return "black";
+  }
+};
+// Changed hover-color of token-indicator to currentPlayer
+changeColor() { // TESTED
+  if (this.currentPlayer === this.player1Name) {
+    clickTargets.classList.remove("black");
+    clickTargets.classList.add("red");
+  } else {
+    clickTargets.classList.remove("red");
+    clickTargets.classList.add("black");
+  }
+};
 }
 
 function updateUI() { // 
